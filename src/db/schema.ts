@@ -3,7 +3,7 @@ import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const usersTable = sqliteTable("users", {
   id: text("id").primaryKey(),
-  username: text("name").notNull(),
+  username: text("username").notNull(),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .default(sql`(cast(unixepoch() as int))`),
