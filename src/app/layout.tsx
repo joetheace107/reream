@@ -2,6 +2,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import { Inter as FontSans } from "next/font/google";
+import { Toaster } from "~/components/ui/sonner";
 import { cn } from "~/lib/utils";
 import "./globals.css";
 
@@ -29,7 +30,10 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider attribute="class">
-          <ClerkProvider>{children}</ClerkProvider>
+          <ClerkProvider>
+            {children}
+            <Toaster richColors />
+          </ClerkProvider>
         </ThemeProvider>
       </body>
     </html>

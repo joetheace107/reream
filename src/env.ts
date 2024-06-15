@@ -10,6 +10,7 @@ export const env = createEnv({
     CLERK_WEBHOOK_SECRET: z.string().min(1),
     TURSO_DATABASE_URL: z.string().url(),
     TURSO_AUTH_TOKEN: z.string().min(1),
+    GITHUB_TOKEN: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
