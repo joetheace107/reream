@@ -11,8 +11,9 @@ import {
   Search,
   ShoppingCart,
 } from "lucide-react";
-import Link from "next/link";
-import { useSelectedLayoutSegment } from "next/navigation";
+import Link, { type LinkProps } from "next/link";
+import { useRouter, useSelectedLayoutSegment } from "next/navigation";
+import { useState } from "react";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
@@ -36,10 +37,11 @@ import { cn } from "~/lib/utils";
 
 export function SiteHeader() {
   const segment = useSelectedLayoutSegment();
+  const [open, setOpen] = useState(false);
 
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4">
-      <Sheet>
+      <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
           <Button variant="outline" size="icon" className="shrink-0 md:hidden">
             <Menu className="size-5" />
@@ -48,15 +50,17 @@ export function SiteHeader() {
         </SheetTrigger>
         <SheetContent side="left" className="flex flex-col">
           <nav className="grid gap-2 text-lg font-medium">
-            <Link
+            <MobileLink
               href="#"
+              onOpenChange={setOpen}
               className="flex items-center gap-2 text-lg font-semibold"
             >
               <Package2 className="h-6 w-6" />
               <span className="sr-only">Acme Inc</span>
-            </Link>
-            <Link
+            </MobileLink>
+            <MobileLink
               href="/admin/"
+              onOpenChange={setOpen}
               className={cn(
                 "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground",
                 !segment && "bg-muted text-foreground",
@@ -64,9 +68,10 @@ export function SiteHeader() {
             >
               <Home className="size-5" />
               Dashboard
-            </Link>
-            <Link
+            </MobileLink>
+            <MobileLink
               href="/admin/repos"
+              onOpenChange={setOpen}
               className={cn(
                 "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground",
                 segment === "repos" && "bg-muted text-foreground",
@@ -74,9 +79,10 @@ export function SiteHeader() {
             >
               <GitHubLogoIcon className="size-5" />
               Repos
-            </Link>
-            <Link
+            </MobileLink>
+            <MobileLink
               href="/admin/deps"
+              onOpenChange={setOpen}
               className={cn(
                 "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground",
                 segment === "deps" && "bg-muted text-foreground",
@@ -84,9 +90,10 @@ export function SiteHeader() {
             >
               <Package className="size-5" />
               Deps
-            </Link>
-            <Link
+            </MobileLink>
+            <MobileLink
               href="#"
+              onOpenChange={setOpen}
               className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
             >
               <ShoppingCart className="size-5" />
@@ -94,14 +101,15 @@ export function SiteHeader() {
               <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
                 6
               </Badge>
-            </Link>
-            <Link
+            </MobileLink>
+            <MobileLink
               href="#"
+              onOpenChange={setOpen}
               className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
             >
               <LineChart className="size-5" />
               Analytics
-            </Link>
+            </MobileLink>
           </nav>
           <div className="mt-auto">
             <Card>
@@ -150,5 +158,35 @@ export function SiteHeader() {
         </DropdownMenuContent>
       </DropdownMenu>
     </header>
+  );
+}
+
+interface MobileLinkProps extends LinkProps {
+  href: string;
+  onOpenChange?: (open: boolean) => void;
+  children: React.ReactNode;
+  className?: string;
+}
+
+function MobileLink({
+  href,
+  onOpenChange,
+  className,
+  children,
+  ...props
+}: MobileLinkProps) {
+  const router = useRouter();
+  return (
+    <Link
+      href={href}
+      onClick={() => {
+        router.push(href.toString());
+        onOpenChange?.(false);
+      }}
+      className={cn(className)}
+      {...props}
+    >
+      {children}
+    </Link>
   );
 }
