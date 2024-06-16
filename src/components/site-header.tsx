@@ -1,3 +1,6 @@
+"use client";
+
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import {
   CircleUser,
   Home,
@@ -7,9 +10,9 @@ import {
   Package2,
   Search,
   ShoppingCart,
-  Users,
 } from "lucide-react";
 import Link from "next/link";
+import { useSelectedLayoutSegment } from "next/navigation";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
@@ -29,14 +32,17 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { Input } from "~/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
+import { cn } from "~/lib/utils";
 
 export function SiteHeader() {
+  const segment = useSelectedLayoutSegment();
+
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4">
       <Sheet>
         <SheetTrigger asChild>
           <Button variant="outline" size="icon" className="shrink-0 md:hidden">
-            <Menu className="h-5 w-5" />
+            <Menu className="size-5" />
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
         </SheetTrigger>
@@ -50,17 +56,40 @@ export function SiteHeader() {
               <span className="sr-only">Acme Inc</span>
             </Link>
             <Link
-              href="#"
-              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+              href="/admin/"
+              className={cn(
+                "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground",
+                !segment && "bg-muted text-foreground",
+              )}
             >
-              <Home className="h-5 w-5" />
+              <Home className="size-5" />
               Dashboard
+            </Link>
+            <Link
+              href="/admin/repos"
+              className={cn(
+                "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground",
+                segment === "repos" && "bg-muted text-foreground",
+              )}
+            >
+              <GitHubLogoIcon className="size-5" />
+              Repos
+            </Link>
+            <Link
+              href="/admin/deps"
+              className={cn(
+                "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground",
+                segment === "deps" && "bg-muted text-foreground",
+              )}
+            >
+              <Package className="size-5" />
+              Deps
             </Link>
             <Link
               href="#"
               className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
             >
-              <ShoppingCart className="h-5 w-5" />
+              <ShoppingCart className="size-5" />
               Orders
               <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
                 6
@@ -70,21 +99,7 @@ export function SiteHeader() {
               href="#"
               className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
             >
-              <Package className="h-5 w-5" />
-              Products
-            </Link>
-            <Link
-              href="#"
-              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-            >
-              <Users className="h-5 w-5" />
-              Customers
-            </Link>
-            <Link
-              href="#"
-              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-            >
-              <LineChart className="h-5 w-5" />
+              <LineChart className="size-5" />
               Analytics
             </Link>
           </nav>
@@ -121,7 +136,7 @@ export function SiteHeader() {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="secondary" size="icon" className="rounded-full">
-            <CircleUser className="h-5 w-5" />
+            <CircleUser className="size-5" />
             <span className="sr-only">Toggle user menu</span>
           </Button>
         </DropdownMenuTrigger>
