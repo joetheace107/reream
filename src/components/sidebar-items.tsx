@@ -11,7 +11,7 @@ export function SidebarItems() {
   const segment = useSelectedLayoutSegment();
 
   return (
-    <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
+    <nav className="grid items-start px-2 text-sm font-medium">
       <Link
         href="/admin/"
         className={cn(

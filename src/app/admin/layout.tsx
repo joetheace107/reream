@@ -7,9 +7,9 @@ export default function AdminLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+    <div className="grid min-h-dvh w-full">
       <Sidebar />
-      <div className="flex flex-col">
+      <div className="flex flex-col md:pl-64">
         <SiteHeader />
         {children}
       </div>
