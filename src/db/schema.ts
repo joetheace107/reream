@@ -72,7 +72,7 @@ export const depsToReposTable = sqliteTable(
 export const depsToReposRelations = relations(depsToReposTable, ({ one }) => ({
   dep: one(depsTable, {
     fields: [depsToReposTable.depId],
-    references: [depsTable.name],
+    references: [depsTable.id],
   }),
   repo: one(reposTable, {
     fields: [depsToReposTable.repoId],
